@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="https://espengokshol.github.io/destinyPixelArt.png">
+    <meta name="author" content="Espen Gokshol">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin page</title>
+    <script>
+        window.onload = oppstart;
+
+        var bestillingReg = [];
+        bestillingReg[0] = ["Navn", "Kevin Jensen", "Camilla Stolke", "Jørgen Johnsen"];
+        bestillingReg[1] = ["Alder", 19, 21, 21];
+        bestillingReg[2] = ["E-post", "k.jensen@hotmail.com", "Stolken@outlook.com", "jorgen.johnsen@gmail.com"];
+        bestillingReg[3] = ["Billettype", "Lørdagspass", "Premiumpass", "Helgepass"];
+        bestillingReg[4] = ["Antall billetter", 5, 2, 5];
+
+
+        function oppstart() {
+            // Hovedprogramkode her...
+            visTabell();
+            document.getElementById("btnRediger").onclick = rediger;
+        }
+
+        function visTabell() { //funksjonen skriver ut tabellen
+            document.getElementById("utskrift").innerHTML = "";
+            var table = document.createElement("table");
+            var form = document.createElement("form");
+
+            for(var i = 0; i < bestillingReg.length; i++) {
+
+                var buffer = bestillingReg[i].length+1;
+                var tr = document.createElement("tr");
+
+                for(var j = 0; j < buffer; j++) {
+
+                    var td = document.createElement("td");
+                    td.innerHTML = bestillingReg[j][i];
+
+                    tr.appendChild(td);
+                }
+                table.appendChild(tr);
+            }
+
+            form.appendChild(table);
+            document.getElementById("utskrift").appendChild(form);
+        }
+
+        function rediger() {
+            var celle = document.getElementById("txtCelle").value; //henter verdien i inputfeltet
+            var radRad =     parseInt(radForm.elements.namedItem("radArrayrad").value);
+            var radKolonne = parseInt(radForm2.elements.namedItem("radArraykolonne").value); //henter verdien til valgt radiokanpp
+            bestillingReg[radKolonne][radRad + 1] = celle; //bytter ut verdien i en celle ved å hente verdiene til radioknappene
+            visTabell(bestillingReg); //skriver tabell-funksjonen (skriver ut tabellen)
+        }
+
+
+    </script>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+    </style>
+</head>
+<body>
+<h1>Administratorside</h1>
+
+<form name="radForm2">
+    <b>Kolonne:</b> <br>
+    Første   <input type="radio" name="radArraykolonne" id="radKolA" value=0> <br>
+    Andre    <input type="radio" name="radArraykolonne" id="radKolB" value=1> <br>
+    Tredje   <input type="radio" name="radArraykolonne" id="radKolC" value=2> <br>
+    Fjerde   <input type="radio" name="radArraykolonne" id="radKolD" value=3> <br>
+    Femte   <input type="radio" name="radArraykolonne" id="radKolE" value=4> <br>
+</form> <br>
+<form name="radForm">
+    <b>Rad:</b> <br>
+    Første  <input type="radio" name="radArrayrad" id="radA" value=0> <br>
+    Andre   <input type="radio" name="radArrayrad" id="radB" value=1> <br>
+    Tredje   <input type="radio" name="radArrayrad" id="radC" value=2> <br>
+    Fjerde   <input type="radio" name="radArrayrad" id="radD" value=3> <br>
+</form> <br>
+
+<input type="text" id="txtCelle">
+
+<button type="button" id="btnRediger">Rediger celle</button>
+
+<p id="utskrift"></p>
+
+</body>
+</html>

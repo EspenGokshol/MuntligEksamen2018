@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="https://espengokshol.github.io/destinyPixelArt.png">
+    <meta name="author" content="Espen Gokshol">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Musikkfestival</title>
+    <script>
+        window.onload = oppstart;
+
+        var bestillingReg = [];
+        bestillingReg[0] = ["Navn", "Kevin Jensen", "Camilla Stolke", "Jørgen Johnsen"];
+        bestillingReg[1] = ["Alder", 19, 21, 21];
+        bestillingReg[2] = ["E-post", "k.jensen@hotmail.com", "Stolken@outlook.com", "jorgen.johnsen@gmail.com"];
+        bestillingReg[3] = ["Billettype", "Lørdagspass", "Premiumpass", "Helgepass"];
+        bestillingReg[4] = ["Antall billetter", 5, 2, 5];
+
+        var billettype = "";
+        var prisSum = "";
+        var antBillett = "";
+
+
+
+        function oppstart() {
+            var vid = document.getElementById("vidForside");
+            document.getElementById("btnBestill").onclick = bestill;
+            document.getElementById("fredagspassDiv").onclick = fredagValgt;
+            document.getElementById("lørdagspassDiv").onclick = lordagValgt;
+            document.getElementById("helgepassDiv").onclick = helgValgt;
+            document.getElementById("premiumpassDiv").onclick = premiumValgt;
+            document.getElementById("btnRegistrerBruker").onclick = regKjop;
+            document.getElementById("btnRegistrerBruker").disabled = true;
+            document.getElementById("btnAvgiSvar").onclick = avgiSvar;
+            document.getElementById("btnPromo").onclick = sePromo;
+            vid.play(); //virker ikke på chrome pga sikkerhetsløsning
+            vid.loop = true;
+            vid.muted = true;
+            document.getElementById("btnAdmin").onclick = adminTilgang;
+        }
+
+        function bestill() {
+            antBillett = document.getElementById("selMenyBillett").value;
+
+            if (billettype === "Fredags") {
+                prisSum = 1799 * antBillett;
+                document.getElementById("btnRegistrerBruker").disabled = false;
+                document.getElementById("txtError").innerHTML = "";
+            }
+            else if (billettype === "Lørdags") {
+                prisSum = 2199 * antBillett;
+                document.getElementById("btnRegistrerBruker").disabled = false;
+                document.getElementById("txtError").innerHTML = "";
+            }
+            else if (billettype === "Helge") {
+                prisSum = 3499 * antBillett;
+                document.getElementById("btnRegistrerBruker").disabled = false;
+                document.getElementById("txtError").innerHTML = "";
+            }
+            else if (billettype === "Premium") {
+                prisSum = 4399 * antBillett;
+                document.getElementById("btnRegistrerBruker").disabled = false;
+                document.getElementById("txtError").innerHTML = "";
+            }
+            if (antBillett > 5) {
+                prisSum = prisSum * 0.9;
+            }
+            document.getElementById("kjopsinfo").innerHTML =
+                "Billettype: " + billettype + "pass" + "<br>" + "Antall billetter: " + antBillett + "<br>" + "Pris: " + prisSum + " NOK";
+
+            if (billettype === "" || antBillett === "blank") {
+                document.getElementById("txtError").innerHTML = "Vennligst velg en billettype og/eller antall billetter";
+                document.getElementById("btnRegistrerBruker").disabled = true;
+                document.getElementById("kjopsinfo").innerHTML = "";
+            }
+
+        }
+        
+        function fredagValgt() {
+            billettype = "Fredags";
+            document.getElementById("fredagspassDiv").style.borderColor = "white";
+            document.getElementById("lørdagspassDiv").style.borderColor = "black";
+            document.getElementById("helgepassDiv").style.borderColor = "black";
+            document.getElementById("premiumpassDiv").style.borderColor = "black";
+        }
+        
+        function lordagValgt() {
+            billettype = "Lørdags";
+            document.getElementById("fredagspassDiv").style.borderColor = "black";
+            document.getElementById("lørdagspassDiv").style.borderColor = "white";
+            document.getElementById("helgepassDiv").style.borderColor = "black";
+            document.getElementById("premiumpassDiv").style.borderColor = "black";
+        }
+        
+        function helgValgt() {
+            billettype = "Helge";
+            document.getElementById("fredagspassDiv").style.borderColor = "black";
+            document.getElementById("lørdagspassDiv").style.borderColor = "black";
+            document.getElementById("helgepassDiv").style.borderColor = "white";
+            document.getElementById("premiumpassDiv").style.borderColor = "black";
+        }
+
+        function premiumValgt() {
+            billettype = "Premium";
+            document.getElementById("fredagspassDiv").style.borderColor = "black";
+            document.getElementById("lørdagspassDiv").style.borderColor = "black";
+            document.getElementById("helgepassDiv").style.borderColor = "black";
+            document.getElementById("premiumpassDiv").style.borderColor = "white";
+        }
+
+        function regKjop() {
+            var regNavn = document.getElementById("regNavn").value;
+            var regAlder = document.getElementById("regAlder").value;
+            var regEpost = document.getElementById("regEpost").value;
+            if (regNavn && regAlder && regEpost != "") {
+                if (regAlder < 18) {
+                    document.getElementById("txtError").innerHTML = "Du er for ung, prøv igjen neste år."
+                }
+                else {
+                    document.getElementById("txtError").innerHTML = "";
+                    bestillingReg[0].push(regNavn);
+                    bestillingReg[1].push(regAlder);
+                    bestillingReg[2].push(regEpost);
+                    bestillingReg[3].push(billettype + "pass");
+                    bestillingReg[4].push(antBillett);
+                    alert(regNavn + " er registrert. Vi sees!");
+                }
+            }
+            else {
+                document.getElementById("txtError").innerHTML = "Et eller flere av feltene er ikke fylt inn"
+            }
+            console.log(bestillingReg);
+        }
+
+        function avgiSvar() {
+            var audio = new Audio('error.mp3');
+            var svar = parseInt(quizForm.elements.namedItem("quiz1").value);
+            if (svar === 2) { //sjekker om du har svart tredje alternativet
+                document.getElementById("txtQuiz").innerHTML = "Riktig! Dette hadde du kontroll på eller så var det vill gjetning";
+                document.getElementById("txtQuiz").style.color = "#00ff00";
+            }
+            else {
+                document.getElementById("txtQuiz").innerHTML = "Feil svar";
+                document.getElementById("txtQuiz").style.color = "red";
+                audio.play();
+            }
+        }
+        
+        function sePromo() {
+            var vid = document.getElementById("videoPromo");
+
+            if (vid.paused === false) {
+                vid.load();
+                vid.pause();
+                document.getElementById("btnPromo").innerHTML = "Tomorrowland 2017"
+            }
+            else if (vid.paused === true) {
+                vid.play();
+                document.getElementById("btnPromo").innerHTML = "Stopp";
+            }
+        }
+
+        function adminTilgang() {
+            window.open("Admin.html");
+
+        }
+
+
+    </script>
+    <style>
+        body {
+            background-color: #4e5766;
+        }
+        #logo {
+            position: absolute;
+            top: 10px;
+            left: -40px;
+            max-height: 200px;
+            z-index: 2;
+        }
+        #vidForside {
+            position: absolute;
+            width: 100%;
+            top: 0px;
+            left: 0px;
+            z-index: 1;
+        }
+
+        #btnBestill {
+            position: absolute;
+            top: 350px;
+            left: 180px;
+        }
+
+        #pMenyBillett {
+             position: absolute;
+             top: 335px;
+             left: 20px;
+         }
+
+        #fredagspassDiv {
+            position: absolute;
+            width: 120px;
+            height: 90px;
+            left: 7px;
+            top: 233px;
+            border: 2px solid black;
+            background-color: #304b61;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #lørdagspassDiv {
+            position: absolute;
+            width: 120px;
+            height: 90px;
+            left: 140px;
+            top: 233px;
+            border: 2px solid black;
+            background-color: #304b61;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #helgepassDiv {
+            position: absolute;
+            width: 120px;
+            height: 90px;
+            left: 273px;
+            top: 233px;
+            border: 2px solid black;
+            background-color: #304b61;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #premiumpassDiv {
+            position: absolute;
+            width: 120px;
+            height: 90px;
+            left: 406px;
+            top: 233px;
+            border: 2px solid black;
+            background-color: #304b61;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+        }
+
+
+
+        #registerKjop {
+            position: absolute;
+            top: 400px;
+            left: 10px;
+            width: 350px;
+            height: 165px;
+            text-align: center;
+            background-color: white;
+            border-radius: 25px;
+        }
+
+        #kjopInfo {
+            position: absolute;
+            top: 400px;
+            left: 380px;
+            width: 240px;
+            text-align: center;
+            background-color: white;
+            border-radius: 25px;
+        }
+
+        #txtError {
+            position: absolute;
+            top: 555px;
+            left: 10px;
+            width: 345px;
+            text-align: center;
+            color: red;
+        }
+
+        #quizDiv {
+            position: absolute;
+            right: 20px;
+            top: 230px;
+            width: 220px;
+            height: 170px;
+            border-radius: 10px;
+            border: 1px solid white;
+            text-align: center;
+            color: white;
+            background-color: #4e667d;
+        }
+
+        #btnPromo {
+            position: absolute;
+            right: 260px;
+            top: 230px;
+        }
+
+        #videoPromo {
+            position: absolute;
+            width: 370px;
+            left: 650px;
+            top: 270px;
+            z-index: 3;
+        }
+
+        #btnAdmin {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 2;
+        }
+
+        #disclaimer {
+            position: absolute;
+            top: 650px;
+            color: #bfbfbf;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<video id="vidForside">
+    <source src="Banner.mp4" type="video/mp4">
+    Nettleseren din støtter ikke video
+</video>
+<img src="tomorrowlandLogo.png" id="logo">
+
+<button type="button" id="btnQuiz">Quiz</button>
+
+
+<div id="billettypeDiv">
+    <button type="button" id="btnBestill">Reserver billett(er)</button>
+
+    <div id="fredagspassDiv">
+        <h3 id="fredagspass">Fredagspass</h3>
+        Pris: 1799 NOK
+    </div>
+
+    <div id="lørdagspassDiv">
+        <h3 id="lørdagspass">Lørdagspass</h3>
+        Pris: 2199 NOK
+    </div>
+
+    <div id="helgepassDiv">
+        <h3 id="helgepass">Helgepass</h3>
+        Pris: 3499 NOK
+    </div>
+
+    <div id="premiumpassDiv">
+        <h3 id="premiumpass">Premiumpass</h3>
+        Pris: 4399 NOK
+    </div>
+    <p id="pMenyBillett">Antall billetter: <select id="selMenyBillett">
+        <option value="blank">---</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+    </select>
+    </p>
+
+
+</div>
+
+
+
+<div id="registerKjop">
+    <h2>Registrer deg og kjøp billettene</h2>
+    Navn: <input type="text" id="regNavn" placeholder="Eks. Ola Nordmann" size="21"> <br>
+    Alder: <input type="text" id="regAlder" placeholder="ID 18" size="21"> <br>
+    E-post: <input type="text" id="regEpost"> <br>
+    <button type="button" id="btnRegistrerBruker">Registrer og kjøp</button>
+</div>
+
+<div id="kjopInfo">
+    <h2>Info om kjøp</h2>
+    <p id="kjopsinfo"></p>
+</div> <br><br>
+
+<p id="txtError"></p>
+
+<div id="quizDiv">
+    <p id="sporsmal">Når var første Tomorrowland?</p>
+
+    <form name="quizForm">
+        1998  <input type="radio" name="quiz1" id="radA" value=0> <br>
+        2001   <input type="radio" name="quiz1" id="radB" value=1> <br>
+        2005  <input type="radio" name="quiz1" id="radC" value=2> <br>
+        2008  <input type="radio" name="quiz1" id="radD" value=3> <br>
+    </form>
+    <button type="button" id="btnAvgiSvar">Avgi svar</button> <br><br>
+    <p id="txtQuiz"></p>
+</div>
+
+<button type="button" id="btnPromo">Tomorrowland 2017</button>
+
+<video id="videoPromo" style="...">
+    <source src="PromoV2.mp4" type="video/mp4">
+    Nettleseren din støtter ikke video
+</video>
+
+<button id="btnAdmin">Admin</button>
+
+<p id="disclaimer">
+    Denne siden er laget for eksamensbruk og representerer ikke Tomorrowland eller andre merkevarer.
+    <br> All bruk av merkevarer og liknende er ment som lærerikt formål. <br><br>
+    Laget av Espen Gokshol
+</p>
+
+
+</body>
+</html>
