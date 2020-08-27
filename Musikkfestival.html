@@ -2,14 +2,14 @@
 <html lang="no">
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="https://espengokshol.github.io/destinyPixelArt.png">
+    <link rel="shortcut icon" href="https://espengokshol.github.io/destinyPixelArt.png"> //logo i fanen
     <meta name="author" content="Espen Gokshol">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Musikkfestival</title>
     <script>
-        window.onload = oppstart;
+        window.onload = oppstart; //sikker oppstar som sørger for at alt laster riktig
 
-        var bestillingReg = [];
+        var bestillingReg = []; //Array som er en tabell med brukere som allerede er registrert
         bestillingReg[0] = ["Navn", "Kevin Jensen", "Camilla Stolke", "Jørgen Johnsen"];
         bestillingReg[1] = ["Alder", 19, 21, 21];
         bestillingReg[2] = ["E-post", "k.jensen@hotmail.com", "Stolken@outlook.com", "jorgen.johnsen@gmail.com"];
@@ -21,7 +21,7 @@
         var antBillett = "";
 
 
-
+        //oppstartselementene på nettsiden
         function oppstart() {
             var vid = document.getElementById("vidForside");
             document.getElementById("btnBestill").onclick = bestill;
@@ -39,6 +39,7 @@
             document.getElementById("btnAdmin").onclick = adminTilgang;
         }
 
+        //Hele bestillingsprosessen foregår her
         function bestill() {
             antBillett = document.getElementById("selMenyBillett").value;
 
@@ -132,6 +133,7 @@
             console.log(bestillingReg);
         }
 
+        //svar på quiz
         function avgiSvar() {
             var audio = new Audio('error.mp3');
             var svar = parseInt(quizForm.elements.namedItem("quiz1").value);
@@ -167,6 +169,8 @@
 
 
     </script>
+    
+    //CSS, alt av utseende skjer under
     <style>
         body {
             background-color: #4e5766;
